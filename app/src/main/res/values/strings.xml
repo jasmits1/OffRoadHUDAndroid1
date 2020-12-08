@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">OffRoadHUDAndroid1</string>
+    <string name="latLong">Longitude: %.6f, Latitude: %.6f</string>
+    <string name="enable_gps">Please enable your gps</string>
+    <string name="permission_request">App requires location permission</string>
+
+    <!-- DashboardActivity TextView Labels-->
+    <string name="label_speed_string">Speed</string>
+    <string name="label_pitch_string">Pitch</string>
+    <string name="label_roll_string">Roll</string>
+
+    <!-- Strings for the orientation values -->
+    <string name="value_format_speed">%1$.2f</string>
+    <string name="value_format_incline">%1$d</string>
+</resources>

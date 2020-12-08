@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bold label style -->
+    <style name="Label" parent="Base.TextAppearance.AppCompat.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Progress Bar Style -->
+    <style name="CustomProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">#00000000</item>
+        <item name="android:progressTint">#000000</item>
+        <item name="android:secondaryProgressTint">#FF0101</item>
+    </style>
+
+</resources>

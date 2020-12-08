@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:gauge="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashboardActivity">
+
+    <!-- Speedometer Element using custom GaugeView -->
+    <com.ntt.customgaugeview.library.GaugeView
+        android:id="@+id/gauge_view"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toTopOf="@id/activity_dashboard"
+        app:layout_constraintLeft_toLeftOf="parent"
+        gauge:divisions="8"
+        gauge:subdivisions="1"
+        gauge:rangeValues="@array/speedometerValues"
+        gauge:scaleEndValue="80"
+        gauge:showInnerRim="false"
+        gauge:showNeedle="true"
+        gauge:showOuterBorder="false"
+        gauge:showOuterRim="true"
+        gauge:showOuterShadow="false"
+        gauge:showRangeText="true"
+        gauge:showRanges="true"
+        gauge:showScale="true"
+        gauge:textUnit="MPH"
+        gauge:textUnitSize="0.06"
+        gauge:textUnitColor="@color/cardview_dark_background"
+        gauge:textValueSize="0.15" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/output_text_group"
+        android:layout_width="191dp"
+        android:layout_height="150dp"
+        android:layout_margin="@dimen/base_margin"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gauge_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Inclinometer Labels -->
+        <TextView
+            android:id="@+id/label_pitch"
+            style="@style/Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_pitch_string"
+            app:layout_constraintLeft_toRightOf="@id/progress_bar_pitch_up"
+            app:layout_constraintTop_toTopOf="@id/output_text_group" />
+
+        <TextView
+            android:id="@+id/label_roll"
+            style="@style/Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_roll_string"
+            app:layout_constraintLeft_toRightOf="@id/progress_bar_pitch_up"
+            app:layout_constraintTop_toBottomOf="@id/label_pitch" />
+
+        <!-- Inclinometer Values -->
+        <TextView
+            android:id="@+id/value_pitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/value_format_incline"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toRightOf="@id/label_pitch"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/output_text_group" />
+
+        <TextView
+            android:id="@+id/value_roll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/value_format_incline"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            app:layout_constraintLeft_toRightOf="@id/label_roll"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/value_pitch" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_roll_left"
+            style="@style/CustomProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="3"
+            android:max="50"
+            android:minWidth="50dp"
+            android:minHeight="50dp"
+            android:progress="25"
+            android:rotation="180"
+            app:layout_constraintLeft_toRightOf="@id/progress_bar_pitch_down"
+            app:layout_constraintRight_toLeftOf="@id/progress_bar_roll_right"
+            app:layout_constraintTop_toBottomOf="@id/label_roll" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_roll_right"
+            style="@style/CustomProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:scaleY="3"
+            android:minWidth="50dp"
+            android:minHeight="50dp"
+            android:progress="25"
+            app:layout_constraintLeft_toRightOf="@id/progress_bar_roll_left"
+            app:layout_constraintTop_toBottomOf="@id/value_roll" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_pitch_up"
+            style="@style/CustomProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:scaleY="3"
+            android:minWidth="50dp"
+            android:minHeight="50dp"
+            android:progress="25"
+            android:rotation="270"
+            app:layout_constraintBottom_toTopOf="@id/progress_bar_pitch_down"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/label_pitch"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_pitch_down"
+            style="@style/CustomProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:max="50"
+            android:scaleY="3"
+            android:minWidth="50dp"
+            android:minHeight="50dp"
+            android:progress="25"
+            android:rotation="90"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/label_pitch"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar_pitch_up" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
