@@ -148,5 +148,15 @@
             app:layout_constraintTop_toBottomOf="@id/progress_bar_pitch_up" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <ToggleButton
+        android:id="@+id/tracking_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="Start Tracking"
+        android:textOn="Stop Tracking"
+        app:layout_constraintTop_toBottomOf="@id/output_text_group"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

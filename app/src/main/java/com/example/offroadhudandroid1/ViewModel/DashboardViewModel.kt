@@ -1,17 +1,21 @@
 package com.example.offroadhudandroid1.ViewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.example.offroadhudandroid1.LiveData.InclineLiveData
-import com.example.offroadhudandroid1.LiveData.LocationLiveData
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
+import com.example.offroadhudandroid1.TelemetryRepository
+import com.example.offroadhudandroid1.Model.LocationModel
 
-class DashboardViewModel(application: Application) : AndroidViewModel(application) {
+class DashboardViewModel @ViewModelInject constructor(
+        private val telemetryRepository: TelemetryRepository
+) : ViewModel() {
 
-    private val locationData = LocationLiveData(application)
-    private val inclineData = InclineLiveData(application)
+    fun getLocationData() = telemetryRepository.getLocationData()
 
-    fun getLocationData() = locationData
+    fun getInclineData() = telemetryRepository.getInclineData()
 
-    fun getInclineData() = inclineData
+    fun saveLocationData(location: LocationModel) = telemetryRepository.saveNewLocation(location)
 
+    fun startNewRoute(routeName: String) = telemetryRepository.startNewRoute(routeName)
+
+    fun endCurrentRoute() = telemetryRepository.endCurrentRoute()
 }

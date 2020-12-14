@@ -11,6 +11,8 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import java.text.SimpleDateFormat
+import java.util.*
 
 class LocationLiveData(private val context: Context) : LiveData<LocationModel>() {
 
@@ -42,10 +44,14 @@ class LocationLiveData(private val context: Context) : LiveData<LocationModel>()
     }
 
     private fun setLocationData(location: Location) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val dateString = dateFormat.format(Date(location.time))
         value = LocationModel(
                 longitude = location.longitude,
                 latitude = location.latitude,
-                speedMS = location.speed
+                speedMS = location.speed,
+                dateString = dateString
         )
     }
 
