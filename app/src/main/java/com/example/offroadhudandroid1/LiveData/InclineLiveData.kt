@@ -9,6 +9,8 @@ import androidx.core.math.MathUtils
 import androidx.lifecycle.LiveData
 import com.example.offroadhudandroid1.Model.InclineModel
 import com.example.offroadhudandroid1.Util.MathUtil
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.*
 
 class InclineLiveData(private val context: Context) : LiveData<InclineModel>(), SensorEventListener {
@@ -33,6 +35,9 @@ class InclineLiveData(private val context: Context) : LiveData<InclineModel>(), 
     }
 
     private fun handleNewAccelerometerData(x: Float, y: Float, z: Float ) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val dateString = dateFormat.format(Calendar.getInstance().time)
         val normOfAccel = sqrt(x*x + y*y + z*z)
 
         var xN = x / normOfAccel
@@ -43,7 +48,7 @@ class InclineLiveData(private val context: Context) : LiveData<InclineModel>(), 
         val rollDegrees = MathUtil.convertRadToDegRounded((atan2(xN, yN)), 5)
 
         //TODO: Round the pitch and roll and convert back to ints
-        value = InclineModel(x, y, z, pitchDegrees, rollDegrees)
+        value = InclineModel(x, y, z, pitchDegrees, rollDegrees, dateString)
     }
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {

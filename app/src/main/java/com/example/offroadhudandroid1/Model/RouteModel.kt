@@ -1,10 +1,16 @@
 package com.example.offroadhudandroid1.Model
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(primaryKeys = ["routeName"])
 data class RouteModel(
-        @SerializedName("routeName")    val routeName: String?,
-        @SerializedName("user")         val user: String?,
-        @SerializedName("startTime")    val startTime: String? = null,
-        @SerializedName("endTime")      val endTime: String? = null
+        @field:SerializedName("routeName")
+        val routeName: String,
+        @field:SerializedName("user")
+        val user: String?,
+        @field:SerializedName("startTime")
+        val startTime: String? = null,
+        @field:SerializedName("endTime")
+        val endTime: String? = null
 )

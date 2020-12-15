@@ -1,11 +1,18 @@
 package com.example.offroadhudandroid1.Model
 
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
+@Entity(primaryKeys = ["dateString"])
 data class LocationModel(
-        @SerializedName("latitude")     val latitude: Double?,
-        @SerializedName("longitude")    val longitude: Double?,
-        @SerializedName("speedMS")      val speedMS: Float?,
-        @SerializedName("dateString")   val dateString: String? = "2020-09-09T00:40:20.861Z",
-        @SerializedName("routeName")    var routeName: String? = null
+        @field:SerializedName("latitude")
+        val latitude: Double?,
+        @field:SerializedName("longitude")
+        val longitude: Double?,
+        @field:SerializedName("speedMS")
+        val speedMS: Float?,
+        @field:SerializedName("dateString")
+        val dateString: String,
+        @field:SerializedName("routeName")
+        var routeName: String? = null
 )

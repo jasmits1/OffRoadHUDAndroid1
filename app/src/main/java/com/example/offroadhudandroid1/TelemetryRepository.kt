@@ -9,13 +9,20 @@ import com.example.offroadhudandroid1.LiveData.LocationLiveData
 import com.example.offroadhudandroid1.Model.LocationModel
 import com.example.offroadhudandroid1.Model.RouteModel
 import com.example.offroadhudandroid1.Network.ApiService
+import com.example.offroadhudandroid1.db.LocationDao
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.qualifiers.ActivityContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 class TelemetryRepository @Inject constructor(
-        @ActivityContext private val context : Context
+        @ActivityContext private val context : Context,
+        private val locationDao: LocationDao
 ) {
 
     var currentRouteName: String? = null
@@ -54,14 +61,14 @@ class TelemetryRepository @Inject constructor(
                 currentRouteName = null
             }
         }
+
+        GlobalScope.launch(Dispatchers.Main) {  testDatabase() }
     }
-
-
-
 
     fun saveNewLocation(location: LocationModel) {
         if(!currentRouteName.isNullOrEmpty())
             location.routeName = currentRouteName
+        GlobalScope.launch(Dispatchers.Main) {   insertNewLocation(location) }
         val apiService = ApiService()
         apiService.postNewLocation(location) {
             if (it?.latitude != null) {
@@ -69,6 +76,18 @@ class TelemetryRepository @Inject constructor(
             } else {
                 println("Api call error!")
             }
+        }
+    }
+
+    private suspend fun insertNewLocation(location: LocationModel) {
+        locationDao.insert(location)
+    }
+
+    //TODO: Remove temp testing function
+    private suspend fun testDatabase() {
+        val locations = locationDao.getAll()
+        for(location in locations) {
+            println("Speed: " + location.speedMS + " Recorded at: " + location.dateString)
         }
     }
 }
