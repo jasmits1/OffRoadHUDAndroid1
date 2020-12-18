@@ -14,6 +14,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.location.SettingsClient
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.PI
 import kotlin.math.roundToInt
 
@@ -90,3 +92,26 @@ internal object MathUtil {
                 (((value * (180 / PI)) / multiple).roundToInt())
     }
 }
+
+/**
+ * Util for date formatting operations.
+ */
+internal object DateUtil {
+
+    fun formatDate(time: Long): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val dateString = dateFormat.format(Date(time))
+        return dateString
+    }
+}
+
+
+
+
+
+
+
+
+
+

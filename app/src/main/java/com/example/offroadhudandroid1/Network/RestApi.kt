@@ -16,6 +16,10 @@ interface RestApi {
     @POST("route")
     fun postNewRoute(@Body route: RouteModel): Call<RouteModel>
 
+    @Headers("Content-Type: application/json")
+    @POST("route/alt")
+    fun postRoute(@Body route: RouteModel): Call<RouteModel>
+
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @FormUrlEncoded
     @POST("route/routeName/{routeName}")

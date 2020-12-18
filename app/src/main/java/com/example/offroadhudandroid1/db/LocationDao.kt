@@ -13,4 +13,7 @@ interface LocationDao {
 
     @Query("SELECT * FROM locationmodel")
     suspend fun getAll(): List<LocationModel>
+
+    @Query("SELECT * FROM locationmodel WHERE routename = :routeName")
+    suspend fun getLocationsForRoute(routeName: String): List<LocationModel>
 }

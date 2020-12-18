@@ -53,6 +53,28 @@ class ApiService {
         )
     }
 
+    fun postRoute(route: RouteModel, onResult: (RouteModel?) -> Unit) {
+        val retrofit = ApiServiceBuilder.buildService(RestApi::class.java)
+        retrofit.postRoute(route).enqueue(
+                object : Callback<RouteModel> {
+                    override fun onFailure(
+                            call: Call<RouteModel>,
+                            t: Throwable
+                    ) {
+                        onResult(null)
+                    }
+
+                    override fun onResponse(
+                            call: Call<RouteModel>,
+                            response: Response<RouteModel>
+                    ) {
+                        val postedRoute = response.body()
+                        onResult(postedRoute)
+                    }
+                }
+        )
+    }
+
     fun postRouteComplete(routeName: String, endTime: String, onResult: (RouteModel?) -> Unit) {
         val retrofit = ApiServiceBuilder.buildService(RestApi::class.java)
         val call = retrofit.postEndRoute(routeName, endTime)

@@ -1,93 +1,109 @@
 package com.example.offroadhudandroid1
 
-import android.app.Application
 import android.content.Context
-import android.location.Location
-import androidx.lifecycle.LiveData
 import com.example.offroadhudandroid1.LiveData.InclineLiveData
 import com.example.offroadhudandroid1.LiveData.LocationLiveData
 import com.example.offroadhudandroid1.Model.LocationModel
 import com.example.offroadhudandroid1.Model.RouteModel
 import com.example.offroadhudandroid1.Network.ApiService
+import com.example.offroadhudandroid1.Util.DateUtil
 import com.example.offroadhudandroid1.db.LocationDao
-import com.google.android.gms.location.LocationServices
+import com.example.offroadhudandroid1.db.RouteDao
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 class TelemetryRepository @Inject constructor(
         @ActivityContext private val context : Context,
-        private val locationDao: LocationDao
+        private val locationDao: LocationDao,
+        private val routeDao: RouteDao
 ) {
 
     var currentRouteName: String? = null
 
+    /**
+     * @return A LiveData instance containing the most recently received location update.
+     */
     fun getLocationData(): LocationLiveData {
         return LocationLiveData(context)
     }
 
+    /**
+     * @return A LiveData instance containing the most recently received incline update.
+     */
     fun getInclineData(): InclineLiveData {
         return InclineLiveData(context)
     }
 
-    fun startNewRoute(routeName: String) {
-        // TODO: Redo the date properly
-        val route = RouteModel(routeName, "jason", Calendar.getInstance().time.toString())
+    /**
+     * Start a new route and save its information in the database.
+     *
+     * @param routeName the name of the newly started route.
+     */
+    suspend fun startNewRoute(routeName: String) {
         currentRouteName = routeName
-        val apiService = ApiService()
-        apiService.postNewRoute(route) {
-            if(it?.routeName != null) {
-                println("New route API call success!")
-            } else {
-                println("New route API call failed.")
-            }
-        }
+        val dateString = DateUtil.formatDate(Calendar.getInstance().timeInMillis)
+        val route = RouteModel(routeName, "jason", true, dateString)
+        routeDao.insert(route)
     }
 
-    fun endCurrentRoute() {
-        // TODO: Redo the date properly
-        val apiService = ApiService()
-        apiService.postRouteComplete(currentRouteName!!, Calendar.getInstance().time.toString()) {
-            if(it?.routeName != null) {
-                println("End route API call success!")
-                currentRouteName = null
-            } else {
-                println("End route API call failed")
-                currentRouteName = null
-            }
+    /**
+     * End a current route, and then post the route and associated telemetry to the server.
+     */
+    suspend fun endCurrentRoute() {
+        val activeRoute = routeDao.findActiveRoute()
+        activeRoute?.isActive = false
+        activeRoute?.endTime = DateUtil.formatDate(Calendar.getInstance().timeInMillis)
+        if (activeRoute != null) {
+            routeDao.update(activeRoute)
+            postRoute(activeRoute)
+            postRouteLocations(activeRoute.routeName)
         }
-
-        GlobalScope.launch(Dispatchers.Main) {  testDatabase() }
+        currentRouteName = null
     }
 
-    fun saveNewLocation(location: LocationModel) {
-        if(!currentRouteName.isNullOrEmpty())
-            location.routeName = currentRouteName
-        GlobalScope.launch(Dispatchers.Main) {   insertNewLocation(location) }
-        val apiService = ApiService()
-        apiService.postNewLocation(location) {
-            if (it?.latitude != null) {
-                println("Api Call Success!")
-            } else {
-                println("Api call error!")
-            }
-        }
-    }
-
-    private suspend fun insertNewLocation(location: LocationModel) {
+    /**
+     * Save a new location to the database.
+     *
+     * @param location the newly received location.
+     */
+    suspend fun saveNewLocation(location: LocationModel) {
+        location.routeName = currentRouteName
         locationDao.insert(location)
     }
 
-    //TODO: Remove temp testing function
-    private suspend fun testDatabase() {
-        val locations = locationDao.getAll()
-        for(location in locations) {
-            println("Speed: " + location.speedMS + " Recorded at: " + location.dateString)
+    /**
+     * Post a completed route to the server.
+     *
+     * @param route the completed route.
+     */
+    private fun postRoute(route: RouteModel) {
+        val apiService = ApiService()
+        apiService.postRoute(route) {
+            if(it != null)
+                println("PostRoute API Call Success!")
+            else
+                println("PostRoute API Call Failed.")
         }
     }
+
+    /**
+     * Post all locations associated with a given route to the server.
+     *
+     *
+     */
+    private suspend fun postRouteLocations(routeName: String) {
+        val locations = locationDao.getLocationsForRoute(routeName)
+        val apiService = ApiService()
+        for(location in locations) {
+            apiService.postNewLocation(location) {
+                if (it == null)
+                    println("PostLocation API call success!")
+                else
+                    println("PostLocation API call error.")
+            }
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.offroadhudandroid1.Model.InclineModel
 import com.example.offroadhudandroid1.Model.LocationModel
 import com.example.offroadhudandroid1.Model.RouteModel
+import okhttp3.Route
 
 /**
  * Main database description
@@ -19,4 +20,5 @@ import com.example.offroadhudandroid1.Model.RouteModel
 )
 abstract class OffRoadHudDb : RoomDatabase() {
     abstract fun locationDao(): LocationDao
+    abstract fun routeDao(): RouteDao
 }

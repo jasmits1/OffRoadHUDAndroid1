@@ -27,4 +27,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideLocationDao(db: OffRoadHudDb) = db.locationDao()
+
+    @Singleton
+    @Provides
+    fun provideRouteDao(db: OffRoadHudDb) = db.routeDao()
 }

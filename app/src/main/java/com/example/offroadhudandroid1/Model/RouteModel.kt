@@ -9,8 +9,10 @@ data class RouteModel(
         val routeName: String,
         @field:SerializedName("user")
         val user: String?,
+        @field:SerializedName("isActive")
+        var isActive: Boolean,
         @field:SerializedName("startTime")
         val startTime: String? = null,
         @field:SerializedName("endTime")
-        val endTime: String? = null
+        var endTime: String? = null
 )

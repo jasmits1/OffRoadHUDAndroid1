@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import androidx.core.math.MathUtils
 import androidx.lifecycle.LiveData
 import com.example.offroadhudandroid1.Model.InclineModel
+import com.example.offroadhudandroid1.Util.DateUtil
 import com.example.offroadhudandroid1.Util.MathUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,9 +36,7 @@ class InclineLiveData(private val context: Context) : LiveData<InclineModel>(), 
     }
 
     private fun handleNewAccelerometerData(x: Float, y: Float, z: Float ) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        val dateString = dateFormat.format(Calendar.getInstance().time)
+        val dateString = DateUtil.formatDate(Calendar.getInstance().timeInMillis)
         val normOfAccel = sqrt(x*x + y*y + z*z)
 
         var xN = x / normOfAccel

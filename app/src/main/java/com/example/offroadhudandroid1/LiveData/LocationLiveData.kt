@@ -7,6 +7,7 @@ import android.location.Location
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import com.example.offroadhudandroid1.Model.LocationModel
+import com.example.offroadhudandroid1.Util.DateUtil
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -44,9 +45,7 @@ class LocationLiveData(private val context: Context) : LiveData<LocationModel>()
     }
 
     private fun setLocationData(location: Location) {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        val dateString = dateFormat.format(Date(location.time))
+        val dateString = DateUtil.formatDate(location.time)
         value = LocationModel(
                 longitude = location.longitude,
                 latitude = location.latitude,
