@@ -39,9 +39,9 @@ class InclineLiveData(private val context: Context) : LiveData<InclineModel>(), 
         val dateString = DateUtil.formatDate(Calendar.getInstance().timeInMillis)
         val normOfAccel = sqrt(x*x + y*y + z*z)
 
-        var xN = x / normOfAccel
-        var yN = y / normOfAccel
-        var zN = z / normOfAccel
+        val xN = x / normOfAccel
+        val yN = y / normOfAccel
+        val zN = z / normOfAccel
 
         val pitchDegrees = MathUtil.convertRadToDegRounded((acos(zN) - 1.5708f), 5)
         val rollDegrees = MathUtil.convertRadToDegRounded((atan2(xN, yN)), 5)

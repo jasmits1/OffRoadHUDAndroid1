@@ -19,7 +19,7 @@ import java.util.*
 import kotlin.math.PI
 import kotlin.math.roundToInt
 
-class GpsUtils(private val context: Context) {
+class Utils(private val context: Context) {
 
     private val settingsClient: SettingsClient = LocationServices.getSettingsClient(context)
     private val locationSettingsRequest: LocationSettingsRequest?

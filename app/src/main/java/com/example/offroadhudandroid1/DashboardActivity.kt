@@ -1,30 +1,28 @@
 package com.example.offroadhudandroid1
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.ToggleButton
-import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.lifecycle.ViewModelProviders
-import com.example.offroadhudandroid1.Model.LocationModel
-import com.example.offroadhudandroid1.Network.ApiService
-import com.example.offroadhudandroid1.Util.GpsUtils
-import com.example.offroadhudandroid1.ViewModel.DashboardViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.ntt.customgaugeview.library.GaugeView
+import com.example.offroadhudandroid1.UI.DashboardFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 const val LOCATION_REQUEST = 100
 const val GPS_REQUEST = 101
 
+@AndroidEntryPoint
+class DashboardActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_dashboard)
+        if(savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, DashboardFragment.newInstance())
+                    .commitNow()
+        }
+    }
+}
+
+/*
 @AndroidEntryPoint
 class DashboardActivity : AppCompatActivity() {
     private val dashboardViewModel: DashboardViewModel by viewModels()
@@ -70,7 +68,7 @@ class DashboardActivity : AppCompatActivity() {
         }
 
 
-        GpsUtils(this).turnGPSOn(object: GpsUtils.OnGpsListener {
+        Utils(this).turnGPSOn(object: Utils.OnGpsListener {
 
             override fun gpsStatus(isGPSEnabled: Boolean) {
                 this@DashboardActivity.isGPSEnabled = isGPSEnabled
@@ -205,14 +203,6 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST -> {
-                invokeLocationAction()
-            }
-        }
-    }
 
 }
+*/
